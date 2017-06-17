@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongo_connection_initializer_1 = require("../utilities/mongo-connection-initializer");
-var Connection = mongo_connection_initializer_1.default.getInstance().Connection;
-var Schema = Connection.Schema;
-var CustomerSchema = new Schema({
+const mongo_connection_initializer_1 = require("../utilities/mongo-connection-initializer");
+let Connection = mongo_connection_initializer_1.default.getInstance().Connection;
+let Schema = Connection.Schema;
+let CustomerSchema = new Schema({
     customerId: Number,
     name: String,
     address: String,
@@ -14,6 +14,5 @@ var CustomerSchema = new Schema({
     remarks: String,
     blogUrl: String
 });
-var CustomerMappedModel = Connection.model('customers', CustomerSchema);
+let CustomerMappedModel = Connection.model('customers', CustomerSchema);
 exports.default = CustomerMappedModel;
-//# sourceMappingURL=customer-schema.js.map

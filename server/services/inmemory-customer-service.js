@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var internet_customer_1 = require("../models/internet-customer");
-var DEFAULT_TIMEOUT_PERIOD = 1000;
-var FOUND_INDEX_POS = 0;
-var MIN_CREDIT_LIMIT = 1000;
-var InMemoryCustomerService = (function () {
-    function InMemoryCustomerService() {
+const internet_customer_1 = require("../models/internet-customer");
+const DEFAULT_TIMEOUT_PERIOD = 1000;
+const FOUND_INDEX_POS = 0;
+const MIN_CREDIT_LIMIT = 1000;
+class InMemoryCustomerService {
+    constructor() {
         this.customers = [];
         this.customers =
             [
@@ -19,22 +19,19 @@ var InMemoryCustomerService = (function () {
                 new internet_customer_1.default(18, 'ePublishers', 'Hyderabad', 'info@ntw.com', '080-4089343', 43000, false, 'Simple Customer Record', 'http://blogs.msdn.com/nwt')
             ];
     }
-    InMemoryCustomerService.prototype.getCustomers = function () {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                resolve(_this.customers);
+    getCustomers() {
+        let promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(this.customers);
             }, DEFAULT_TIMEOUT_PERIOD);
         });
         return promise;
-    };
-    InMemoryCustomerService.prototype.getCustomer = function (customerId) {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            var validation = false;
-            var filteredCustomer = null;
-            for (var _i = 0, _a = _this.customers; _i < _a.length; _i++) {
-                var customer = _a[_i];
+    }
+    getCustomer(customerId) {
+        let promise = new Promise((resolve, reject) => {
+            let validation = false;
+            let filteredCustomer = null;
+            for (let customer of this.customers) {
                 if (customer && customer.customerId === customerId) {
                     validation = true;
                     filteredCustomer = customer;
@@ -51,12 +48,11 @@ var InMemoryCustomerService = (function () {
                 resolve(filteredCustomer);
         });
         return promise;
-    };
-    InMemoryCustomerService.prototype.getCustomersByName = function (customerName) {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            var filteredCustomers = _this.customers.filter(function (customer) {
-                var validation = customer &&
+    }
+    getCustomersByName(customerName) {
+        let promise = new Promise((resolve, reject) => {
+            let filteredCustomers = this.customers.filter(customer => {
+                let validation = customer &&
                     typeof customer.name !== 'undefined' &&
                     customer.name.indexOf(customerName) >= FOUND_INDEX_POS;
                 return validation;
@@ -64,11 +60,10 @@ var InMemoryCustomerService = (function () {
             resolve(filteredCustomers);
         });
         return promise;
-    };
-    InMemoryCustomerService.prototype.addNewCustomer = function (customer) {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            var validation = customer &&
+    }
+    addNewCustomer(customer) {
+        let promise = new Promise((resolve, reject) => {
+            let validation = customer &&
                 customer.name && typeof customer.credit !== 'undefined' &&
                 customer.credit >= MIN_CREDIT_LIMIT;
             if (!validation) {
@@ -77,12 +72,10 @@ var InMemoryCustomerService = (function () {
                 });
                 return;
             }
-            _this.customers.push(customer);
+            this.customers.push(customer);
             resolve(customer);
         });
         return promise;
-    };
-    return InMemoryCustomerService;
-}());
+    }
+}
 exports.default = InMemoryCustomerService;
-//# sourceMappingURL=inmemory-customer-service.js.map

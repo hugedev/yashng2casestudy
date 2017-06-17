@@ -7,7 +7,7 @@ import HttpStatusCodes from '../utilities/http-status-codes';
 
 const INVALID_SOCKET_SERVER_SPECIFIED: string = 'Invalid Socket Server Specified!';
 const NEW_CUSTOMER_EVENT: string = 'NewCustomerRecord';
-const DEFAULT_NO_OF_RECORDS: number = 25;
+const DEFAULT_NO_OF_RECORDS: number = 20;
 
 class CustomerRouting {
     private customerService: CustomerService = new CustomerService();

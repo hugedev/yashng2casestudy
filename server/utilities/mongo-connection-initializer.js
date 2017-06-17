@@ -1,35 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongoose = require("mongoose");
-var DEFAULT_DB_SERVER_NAME = 'localhost';
-var DEFAULT_PORT_NUMBER = 27017;
-var DEFAULT_DB_NAME = 'yashcrmsystemdb';
-var MongoConnectionInitializer = (function () {
-    function MongoConnectionInitializer(databaseServerName, portNumber, databaseName) {
-        if (databaseServerName === void 0) { databaseServerName = DEFAULT_DB_SERVER_NAME; }
-        if (portNumber === void 0) { portNumber = DEFAULT_PORT_NUMBER; }
-        if (databaseName === void 0) { databaseName = DEFAULT_DB_NAME; }
+const mongoose = require("mongoose");
+const DEFAULT_DB_SERVER_NAME = 'localhost';
+const DEFAULT_PORT_NUMBER = 27017;
+const DEFAULT_DB_NAME = 'yashcrmsystemdb';
+class MongoConnectionInitializer {
+    constructor(databaseServerName = DEFAULT_DB_SERVER_NAME, portNumber = DEFAULT_PORT_NUMBER, databaseName = DEFAULT_DB_NAME) {
         this.databaseServerName = databaseServerName;
         this.portNumber = portNumber;
         this.databaseName = databaseName;
-        var connectionString = "mongodb://" + databaseServerName + ":" + portNumber + "/" + databaseName;
+        let connectionString = `mongodb://${databaseServerName}:${portNumber}/${databaseName}`;
         mongoose.connect(connectionString);
+        // Change the default promise used by Mongoose to ES 2015 Promise Classes, rather
+        // using in-built promises.
         mongoose.Promise = Promise;
     }
-    Object.defineProperty(MongoConnectionInitializer.prototype, "Connection", {
-        get: function () {
-            return mongoose;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MongoConnectionInitializer.getInstance = function () {
+    get Connection() {
+        return mongoose;
+    }
+    static getInstance() {
         if (typeof MongoConnectionInitializer.connectionInitializer === 'undefined') {
             MongoConnectionInitializer.connectionInitializer = new MongoConnectionInitializer();
         }
         return MongoConnectionInitializer.connectionInitializer;
-    };
-    return MongoConnectionInitializer;
-}());
+    }
+}
 exports.default = MongoConnectionInitializer;
-//# sourceMappingURL=mongo-connection-initializer.js.map

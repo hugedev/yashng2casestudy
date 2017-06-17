@@ -2,9 +2,24 @@
     <ul class="nav navbar-nav pull-right">
         <li class="active"><a routerLink='home'>Home</a></li>
         <li><a routerLink='about-us'>About</a></li>
-        <li><a routerLink='crm-system'>Customers</a></li>
+
+        <li *ngIf='isAuthenticated'>
+            <a routerLink='crm-system'>Customers</a>
+        </li>
+
+        <li *ngIf='isAuthenticated'>
+            <a routerLink='new-customer'>New Customer</a>
+        </li>
+
         <li><a routerLink='contact'>Contact</a></li>
-        <li><a class="btn" href="signin.html">SIGN IN / SIGN UP</a></li>
+
+        <li *ngIf='!isAuthenticated'>
+            <a class="btn" routerLink='sign-in'>Sign In / Sign Up</a>
+        </li>
+
+        <li *ngIf='isAuthenticated' style='color: white;'>
+            <a class="btn" (click)='signout()'>Welcome User, Sign Out</a>
+        </li>
     </ul>
 </div>
 <!--/.nav-collapse -->

@@ -29,7 +29,7 @@ class UserProfileRouting {
                     return;
                 }
 
-                let userId = bodyContent.userId;
+                let userId = parseInt(bodyContent.userId);
                 let password = bodyContent.password;
 
                 try {
@@ -38,12 +38,21 @@ class UserProfileRouting {
                     if (validationStatus) {
                         let userProfile = await this.userProfileService.getUserProfile(userId);
 
-                        userProfile.password = NULLIFY_PASSWORD;
+                        let userProfilePayload = {
+                            userId: userProfile.userId,
+                            email: userProfile.email,
+                            department: userProfile.department,
+                            title: userProfile.title
+                        };
 
-                        let signedToken = JwtSignProcessor.sign(userProfile, this.globalSecretKey);
+                        let signedToken = JwtSignProcessor.sign(userProfilePayload, this.globalSecretKey);
 
                         response.status(HttpStatusCodes.OK).json({
                             token: signedToken
+                        });
+                    } else {
+                        response.status(HttpStatusCodes.CLIENT_ERROR).json({
+                            status: false
                         });
                     }
                 } catch (error) {

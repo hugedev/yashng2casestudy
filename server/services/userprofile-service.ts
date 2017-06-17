@@ -30,6 +30,7 @@ class UserProfileService implements IUserProfileService {
                         break;
                     }
                 }
+
                 if (filteredUserProfile) {
                     resolve(<UserProfile>filteredUserProfile);
                 } else {

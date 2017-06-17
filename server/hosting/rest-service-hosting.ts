@@ -77,8 +77,8 @@ class RestServiceHost {
             secret: this.globalSecretKey
         }
 
-        // this.app.use('/api/customers', expressJwt(jwtOptions));
-        // this.app.use('/api/orders', expressJwt(jwtOptions));
+        this.app.use('/api/customers', expressJwt(jwtOptions));
+        this.app.use('/api/orders', expressJwt(jwtOptions));
 
         this.app.use(bodyParser.json());
         this.app.use('/api/customers', this.customerRouting.Router);

@@ -1,13 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var JWT = require("jsonwebtoken");
-var TEN_MINUTES = '10m';
-var JwtSignProcessor = (function () {
-    function JwtSignProcessor() {
-    }
-    JwtSignProcessor.sign = function (payload, globalSecretKey) {
-        var signedToken = '';
-        var validationStatus = globalSecretKey && payload;
+const JWT = require("jsonwebtoken");
+const TEN_MINUTES = '10m';
+class JwtSignProcessor {
+    static sign(payload, globalSecretKey) {
+        let signedToken = '';
+        let validationStatus = globalSecretKey && payload;
         if (!validationStatus) {
             throw new Error('Invalid Global Secret Key (or) Payload Specified!');
         }
@@ -15,8 +13,6 @@ var JwtSignProcessor = (function () {
             expiresIn: TEN_MINUTES
         });
         return signedToken;
-    };
-    return JwtSignProcessor;
-}());
+    }
+}
 exports.default = JwtSignProcessor;
-//# sourceMappingURL=jwt-sign-processor.js.map

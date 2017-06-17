@@ -1,25 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var COLUMN_DELIMITER = ', ';
-var NO_OF_TRAIL_CHARACTERS = 2;
-var START_POS = 0;
-var ObjectFormatter = (function () {
-    function ObjectFormatter() {
-    }
-    ObjectFormatter.format = function (obj) {
-        var formattedString = '';
+const COLUMN_DELIMITER = ', ';
+const NO_OF_TRAIL_CHARACTERS = 2;
+const START_POS = 0;
+class ObjectFormatter {
+    static format(obj) {
+        let formattedString = '';
         if (obj) {
-            for (var property in obj) {
-                var propertyValue = obj[property];
+            for (let property in obj) {
+                let propertyValue = obj[property];
                 if (typeof propertyValue !== 'function') {
-                    formattedString += "" + propertyValue + COLUMN_DELIMITER;
+                    formattedString += `${propertyValue}${COLUMN_DELIMITER}`;
                 }
             }
             formattedString = formattedString.substr(START_POS, formattedString.length - NO_OF_TRAIL_CHARACTERS);
         }
         return formattedString;
-    };
-    return ObjectFormatter;
-}());
+    }
+}
 exports.default = ObjectFormatter;
-//# sourceMappingURL=object-formatter.js.map

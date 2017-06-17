@@ -1,20 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var http = require("http");
-var morgan = require("morgan");
-var express = require("express");
-var bodyParser = require("body-parser");
-var socketio = require("socket.io");
-var http_status_codes_1 = require("../utilities/http-status-codes");
-var userprofile_routing_1 = require("../routing/userprofile-routing");
-var customer_routing_1 = require("../routing/customer-routing");
-var order_routing_1 = require("../routing/order-routing");
-var cors_processor_1 = require("../utilities/cors-processor");
-var random_generator_1 = require("../utilities/random-generator");
-var DEFAULT_PORT = 9090;
-var DEFAULT_GLOBAL_SECRET_KEY = 'Yash Technologies, Hyderabad';
-var RestServiceHost = (function () {
-    function RestServiceHost() {
+const http = require("http");
+const morgan = require("morgan");
+const express = require("express");
+const bodyParser = require("body-parser");
+const expressJwt = require("express-jwt");
+const socketio = require("socket.io");
+const http_status_codes_1 = require("../utilities/http-status-codes");
+const userprofile_routing_1 = require("../routing/userprofile-routing");
+const customer_routing_1 = require("../routing/customer-routing");
+const order_routing_1 = require("../routing/order-routing");
+const cors_processor_1 = require("../utilities/cors-processor");
+const random_generator_1 = require("../utilities/random-generator");
+const DEFAULT_PORT = 9090;
+const DEFAULT_GLOBAL_SECRET_KEY = 'Yash Technologies, Hyderabad';
+class RestServiceHost {
+    constructor() {
         this.portNumber = process.env.PORT_NUMBER || DEFAULT_PORT;
         this.globalSecretKey =
             process.env.GLOBAL_SECRET_KEY || DEFAULT_GLOBAL_SECRET_KEY;
@@ -26,7 +27,7 @@ var RestServiceHost = (function () {
         this.orderRouting = new order_routing_1.default();
         this.initializeMiddleware();
     }
-    RestServiceHost.prototype.handleAuthorizationError = function (error, request, response, next) {
+    handleAuthorizationError(error, request, response, next) {
         if (error && error.constructor.name === 'UnauthorizedError') {
             response.status(http_status_codes_1.default.CLIENT_ERROR).json({
                 status: 'Authorization Failed'
@@ -34,48 +35,46 @@ var RestServiceHost = (function () {
             return;
         }
         next();
-    };
-    RestServiceHost.prototype.initializeMiddleware = function () {
-        this.sioServer.on('connection', function (socketClient) {
-            var socketClientId = random_generator_1.default.generate();
+    }
+    initializeMiddleware() {
+        this.sioServer.on('connection', socketClient => {
+            let socketClientId = random_generator_1.default.generate();
             socketClient.client.id = socketClientId.toString();
-            console.log("Socket Client " + socketClient.client.id + " Connected ...");
-            socketClient.on('disconnect', function () {
-                console.log("Socket Client " + socketClient.client.id + " Disconnected ...");
+            console.log(`Socket Client ${socketClient.client.id} Connected ...`);
+            socketClient.on('disconnect', () => {
+                console.log(`Socket Client ${socketClient.client.id} Disconnected ...`);
             });
         });
         this.app.use(morgan("tiny"));
         this.app.use(this.handleAuthorizationError);
         this.app.use(cors_processor_1.default.applyCors);
-        var jwtOptions = {
+        let jwtOptions = {
             secret: this.globalSecretKey
         };
+        this.app.use('/api/customers', expressJwt(jwtOptions));
+        this.app.use('/api/orders', expressJwt(jwtOptions));
         this.app.use(bodyParser.json());
         this.app.use('/api/customers', this.customerRouting.Router);
         this.app.use('/authenticate', this.userProfileRouting.Router);
         this.app.use('/api/orders', this.orderRouting.Router);
-        var staticWebFolder = __dirname + "/../../client";
+        let staticWebFolder = __dirname + "/../../client";
         this.app.use('/', express.static(staticWebFolder));
-    };
-    RestServiceHost.prototype.start = function () {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            _this.httpServer.listen(_this.portNumber, function () {
+    }
+    start() {
+        let promise = new Promise((resolve, reject) => {
+            this.httpServer.listen(this.portNumber, () => {
                 resolve(true);
             });
         });
         return promise;
-    };
-    RestServiceHost.prototype.stop = function () {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            if (_this.httpServer.listening) {
-                _this.httpServer.close(function () { return resolve(true); });
+    }
+    stop() {
+        let promise = new Promise((resolve, reject) => {
+            if (this.httpServer.listening) {
+                this.httpServer.close(() => resolve(true));
             }
         });
         return promise;
-    };
-    return RestServiceHost;
-}());
+    }
+}
 exports.default = RestServiceHost;
-//# sourceMappingURL=rest-service-hosting.js.map

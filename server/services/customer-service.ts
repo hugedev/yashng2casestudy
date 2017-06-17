@@ -2,8 +2,10 @@ import CustomerMappedModel from '../schemas/customer-schema';
 import InternetCustomer from '../models/internet-customer';
 import ICustomerService from './icustomer-service';
 
+const DEFAULT_NO_OF_RECORDS: number = 20;
+
 class CustomerService implements ICustomerService {
-    getCustomers(noOfRecords: number): Promise<InternetCustomer[]> {
+    getCustomers(noOfRecords: number = DEFAULT_NO_OF_RECORDS): Promise<InternetCustomer[]> {
         let promise = new Promise<InternetCustomer[]>(
             async (resolve, reject) => {
                 try {

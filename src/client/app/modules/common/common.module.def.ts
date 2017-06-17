@@ -1,3 +1,6 @@
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import LayoutComponent from '../../components/layout/layout.component';
 import HeaderComponent from '../../components/header/header.component';
 import NavigationComponent from '../../components/navigation/navigation.component';
@@ -15,7 +18,7 @@ let partialComponents = [HeaderComponent, LayoutComponent,
     NavigationComponent, FooterComponent, FaqComponent, VacanciesComponent];
 
 let commonModuleDef: any = {
-    imports: [commonRouteEntries],
+    imports: [CommonModule, FormsModule, commonRouteEntries],
     declarations: [...partialComponents, ...navigationComponents],
     exports: [LayoutComponent]
 };

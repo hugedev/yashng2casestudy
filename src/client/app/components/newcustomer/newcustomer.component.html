@@ -1,0 +1,104 @@
+<header id="head" class="secondary"></header>
+
+<!-- container -->
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">New Customer</li>
+    </ol>
+
+    <br />
+
+    <div class="row">
+        <div class='col-md-8'>
+            <form [formGroup]='newCustomerFormGroup' (ngSubmit)='saveData()' class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputCustomerId" class="col-sm-4 control-label">Customer Id:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='customerId' class="form-control" id="inputCustomerId" placeholder="Customer Id">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputCustomerName" class="col-sm-4 control-label">Customer Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='name' class="form-control" id="inputCustomerName">
+                        <div class='text-danger' *ngIf="newCustomerFormGroup.get('name').hasError('required') && newCustomerFormGroup.get('name').touched">
+                            <br/> Invalid Customer Name Specified!
+                        </div>
+
+                        <div class='text-danger' *ngIf="newCustomerFormGroup.get('name').hasError('maxlength') && newCustomerFormGroup.get('name').touched">
+                            <br/> Only 15 Characters for Customer Name Allowed.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputAddress" class="col-sm-4 control-label">Address:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='address' class="form-control" id="inputAddress">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-4 control-label">Email:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='email' class="form-control" id="inputEmail">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPhone" class="col-sm-4 control-label">Phone Number:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='phone' class="form-control" id="inputPhone">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputCredit" class="col-sm-4 control-label">Credit Limit:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='credit' class="form-control" id="inputCredit">
+
+                        <div class='text-danger' *ngIf="newCustomerFormGroup.get('credit').hasError('required') && newCustomerFormGroup.get('credit').touched">
+                            <br/> Invalid Credit Limit Specified!
+                        </div>
+
+                        <div class='text-danger' *ngIf="newCustomerFormGroup.get('credit').hasError('creditLimitValidation') && newCustomerFormGroup.get('credit').touched">
+                            <br/> As per business rule, Credit limit should between 1000 and 50000.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputRemarks" class="col-sm-4 control-label">Remarks:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='remarks' class="form-control" id="inputRemarks">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputBlogUrl" class="col-sm-4 control-label">Blog Url:</label>
+                    <div class="col-sm-8">
+                        <input type="text" formControlName='blogUrl' class="form-control" id="inputBlogUrl">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <div class="checkbox">
+                            <label>
+                                <input formControlName='status' type="checkbox"> Active Status
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
